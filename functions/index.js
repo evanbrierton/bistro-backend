@@ -22,7 +22,7 @@ send the email using the bistro email account */
 exports.email = functions.https.onCall(({ name, email, date }) => {
   // Format date and time with regard to weird timezone issues
   const adjustedDate = new Date(date);
-  adjustedDate.setTime(adjustedDate.getTime() + adjustedDate.getTimezoneOffset() * 60 * 1000);
+  adjustedDate.setTime(adjustedDate.getTime() + (adjustedDate.getTimezoneOffset() + 1) * 60 * 1000);
   const dateString = `${months[adjustedDate.getMonth()]} ${adjustedDate.getDate()}`;
   const timeString = adjustedDate.toTimeString().substr(0, 5);
 
