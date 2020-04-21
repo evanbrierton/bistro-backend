@@ -17,10 +17,13 @@ const months = [
   'December',
 ];
 
+// Function to format info provided by user into an email and send the email using the bistro email account
 exports.email = functions.https.onCall(({ name, email, date }) => {
+  // Format date and time
   const dateString = `${months[new Date(date).getMonth()]} ${new Date(date).getDate()}`;
   const timeString = new Date(date).toLocaleTimeString().substr(0, 5);
 
+  // Format email
   const html = `
     <h1>The Bistro</h1>
     <p>
@@ -37,8 +40,10 @@ exports.email = functions.https.onCall(({ name, email, date }) => {
     Instructions on where to find us can be found on our website at https://webdesign-bistro.web.app/location.
   `;
 
+  // Initialise transporter
   const transporter = nodemailer.createTransport({ service: 'gmail', auth });
 
+  // Set transporter options
   const options = {
     to: email,
     from: auth.user,
@@ -47,6 +52,7 @@ exports.email = functions.https.onCall(({ name, email, date }) => {
     html,
   };
 
+  // Send email
   transporter.sendMail(
     options, (error, data) => (error ? console.log(error) : console.log(data)),
   );
