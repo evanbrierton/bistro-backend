@@ -21,7 +21,7 @@ const months = [
 exports.email = functions.https.onCall(({ name, email, date }) => {
   // Format date and time
   const dateString = `${months[new Date(date).getMonth()]} ${new Date(date).getDate()}`;
-  const timeString = new Date(date).toLocaleTimeString().substr(0, 5);
+  const timeString = new Date(date).toTimeString().substr(0, 5);
 
   // Format email
   const html = `
