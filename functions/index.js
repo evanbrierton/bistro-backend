@@ -17,11 +17,16 @@ const months = [
   'December',
 ];
 
-// Function to format info provided by user into an email and send the email using the bistro email account
+/* Function to format info provided by user into an email and
+send the email using the bistro email account */
 exports.email = functions.https.onCall(({ name, email, date }) => {
-  // Format date and time
-  const dateString = `${months[new Date(date).getMonth()]} ${new Date(date).getDate()}`;
-  const timeString = new Date(date).toTimeString().substr(0, 5);
+  // Format date and time with regard to weird timezone issues
+  const adjustedDate = (
+    new Date(date).setTime(new Date(date).getTime()
+    + new Date(date).getTimezoneOffset() * 60 * 1000)
+  );
+  const dateString = `${months[adjustedDate.getMonth()]} ${adjustedDate.getDate()}`;
+  const timeString = adjustedDate.toTimeString().substr(0, 5);
 
   // Format email
   const html = `
